@@ -1,20 +1,3 @@
-// kick animation using William Malone's code 
-// http://www.williammalone.com/articles/create-html5-canvas-javascript-sprite-animation/
-
-// Copyright 2013 William Malone (www.williammalone.com)
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//   http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
- 
 (function() {
 	// http://paulirish.com/2011/requestanimationframe-for-smart-animating/
 	// http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
@@ -171,18 +154,27 @@ function kick(el, et) {
 }
 
 function keeperJump() {
-                    var randomBinary = Math.floor(Math.random()*2);
+                    var randomBinary = Math.floor(Math.random()*3);
                     var someTimeAfter = window.setTimeout(function() {
                       if ((randomBinary == 0) && (x3 >= 0.55)) {
                     document.getElementById('goal-keeper-state-1').style.display = "none";
                         document.getElementById('goal-keeper-state-2').style.display = "block";
+                        document.getElementById('goal-keeper-state-3').style.display = "none";
                         direction = "left";
                       }
                       else if ((randomBinary == 1) && (x3 >= 0.55)) {
                     document.getElementById('goal-keeper-state-1').style.display = "none";
                         document.getElementById('goal-keeper-state-3').style.display = "block";
+                        document.getElementById('goal-keeper-state-2').style.display = "none";
                         direction = "right";
                       }
+                      else if ((randomBinary == 2) && (x3 >= 0.55)) {
+                        document.getElementById('goal-keeper-state-1').style.display = "block";
+                        document.getElementById('goal-keeper-state-2').style.display = "none";
+                        document.getElementById('goal-keeper-state-3').style.display = "none";
+                        direction ="middle";    
+                            // direction = "right";
+                          }
                     }, 0);
 }
 
@@ -230,6 +222,16 @@ function moveBall(el, et) {
 	              modalElem6.setAttribute("class","modal active");}
 	      }
 	    }
+      else if ((direction == "middle")&&(endLeft != 383.5391346621293)) {
+	      // increase the score and indicate it on the score board
+	      incrementScore();
+	      if (chanceCount < 4) {modalElem5.setAttribute("class","modal active");}
+	      else {
+	        if (score > 4) {modalElem7.setAttribute("class","modal active");}
+	        else {modalElem6.innerHTML = "You scored " + score + " goal(s) out of 5. Click to try again";
+	              modalElem6.setAttribute("class","modal active");}
+	      }
+	    }
 	    else {
 	      if (chanceCount < 4) {modalElem4.setAttribute("class","modal active");}
 	      else {
@@ -249,55 +251,55 @@ function moveBall(el, et) {
 }
 
 // to osciallte the vertical direction indicator
-function moveVerticalSmallBall() {
-  var thing = document.getElementById('vertical-direction-indicator');
-  if (thing.getAttribute('class') == "small-ball one-end") {
-    thing.setAttribute('class','small-ball other-end');
-  }
-  else if (thing.getAttribute('class') == "small-ball other-end") {
-    thing.setAttribute('class','small-ball one-end');
-  }
-}
+// function moveVerticalSmallBall() {
+//   var thing = document.getElementById('vertical-direction-indicator');
+//   if (thing.getAttribute('class') == "small-ball one-end") {
+//     thing.setAttribute('class','small-ball other-end');
+//   }
+//   else if (thing.getAttribute('class') == "small-ball other-end") {
+//     thing.setAttribute('class','small-ball one-end');
+//   }
+// }
 
-var verticalIndicatorOscillate = window.setInterval(moveVerticalSmallBall, 320);
+// var verticalIndicatorOscillate = window.setInterval(moveVerticalSmallBall, 320);
 
 // to osciallte the horizontal direction indicator
-function moveHorizontalSmallBall() {
-  var thing = document.getElementById('horizontal-direction-indicator');
-  if (thing.getAttribute('class') == "small-ball one-end") {
-    thing.setAttribute('class','small-ball other-end');
-  }
-  else if (thing.getAttribute('class') == "small-ball other-end") {
-    thing.setAttribute('class','small-ball one-end');
-  }
-}
+// function moveHorizontalSmallBall() {
+//   var thing = document.getElementById('horizontal-direction-indicator');
+//   if (thing.getAttribute('class') == "small-ball one-end") {
+//     thing.setAttribute('class','small-ball other-end');
+//   }
+//   else if (thing.getAttribute('class') == "small-ball other-end") {
+//     thing.setAttribute('class','small-ball one-end');
+//   }
+// }
 
-var verticalIndicatorOscillate = window.setInterval(moveHorizontalSmallBall, 320);
+// var verticalIndicatorOscillate = window.setInterval(moveHorizontalSmallBall, 320);
 
 // to osciallte the vertical direction indicator
-function movePowerSmallBall() {
-  var thing = document.getElementById('power-level-indicator');
-  if (thing.getAttribute('class') == "small-ball one-end") {
-    thing.setAttribute('class','small-ball other-end');
-  }
-  else if (thing.getAttribute('class') == "small-ball other-end") {
-    thing.setAttribute('class','small-ball one-end');
-  }
-}
+// function movePowerSmallBall() {
+//   var thing = document.getElementById('power-level-indicator');
+//   if (thing.getAttribute('class') == "small-ball one-end") {
+//     thing.setAttribute('class','small-ball other-end');
+//   }
+//   else if (thing.getAttribute('class') == "small-ball other-end") {
+//     thing.setAttribute('class','small-ball one-end');
+//   }
+// }
 
-var powerLevelOscillate = window.setInterval(movePowerSmallBall, 320);
+// var powerLevelOscillate = window.setInterval(movePowerSmallBall, 320);
 
 function refreshScene() {
   // stop the meters
-  document.getElementById('vertical-direction-indicator').setAttribute('style','')
-  document.getElementById('vertical-direction-indicator').setAttribute('class','small-ball one-end');
-  document.getElementById('horizontal-direction-indicator').setAttribute('style','')
-  document.getElementById('horizontal-direction-indicator').setAttribute('class','small-ball one-end');
-  document.getElementById('power-level-indicator').setAttribute('style','')
-  document.getElementById('power-level-indicator').setAttribute('class','small-ball one-end');
-  verticalBallStopped = false;
-  horizontalBallStopped = false;
-  powerBallStopped = false;
+  // document.getElementById('vertical-direction-indicator').setAttribute('style','')
+  // document.getElementById('vertical-direction-indicator').setAttribute('class','small-ball one-end');
+  // document.getElementById('horizontal-direction-indicator').setAttribute('style','')
+  // document.getElementById('horizontal-direction-indicator').setAttribute('class','small-ball one-end');
+  // document.getElementById('power-level-indicator').setAttribute('style','')
+  // document.getElementById('power-level-indicator').setAttribute('class','small-ball one-end');
+  // verticalBallStopped = false;
+  // horizontalBallStopped = false;
+  // powerBallStopped = false;
   
   // stop the ball
   document.getElementById('zee-ball').setAttribute('style','')
@@ -318,7 +320,8 @@ function stopVerticalBall() {
         style = window.getComputedStyle(element),
         top = style.getPropertyValue('top');
       x1 = parseInt(top.substring(0,3), 10);
-      x1 = (459-x1)/117;
+      x1 = (459-x1)/117;  
+      // x1 = 117;
       console.log(x1);
       // fix the position of the small ball to wherever it is
       element.setAttribute("class", "small-ball");
@@ -332,6 +335,7 @@ function stopHorizontalBall() {
         left = style.getPropertyValue('left');
       x2 = parseInt(left.substring(0,3), 10);
       x2 = (x2-60)/119;
+      // x2 = 100;
       console.log(x2);
       // fix the position of the small ball to wherever it is
       element.setAttribute("class", "small-ball");
@@ -340,46 +344,132 @@ function stopHorizontalBall() {
 }
 
 function stopPowerBallAndKick() {
-      // get position of the small ball
-      var element = document.getElementById('power-level-indicator'),
-        style = window.getComputedStyle(element),
-        right = style.getPropertyValue('right');
-      x3 = parseInt(right.substring(0,3), 10);
-      x3 = (191-x3)/121;
-      console.log(x3);
-      
-      // fix the position of the small ball to wherever it is
-      element.setAttribute("class", "small-ball");
-      element.style.right = right;
-      powerBallStopped = true;
-      
-      // Calculate the ending position of the ball
-      var Et, El, Qt, Ql;
-      Et = 440 - ((0.8 + x1)/1.8)*x3*440 + 0.3*x3*((Math.abs(0.5-x2))/0.5)*440;
-      var stringEt = Et.toString(10);
-      El = 405 + x3*(x2-0.5)*810
-      var stringEl = El.toString(10);
-                      
-      // ending co-ordinates of the ball
-      endTop = Et;
+  var Et, El, Qt, Ql;
+  window.addEventListener(
+    "keydown",
+    (event) => {
+      if (event.defaultPrevented) {
+        return; // Do nothing if event already handled
+      }
+  
+      switch (event.code) {
+        case "KeyS":
+        case "ArrowDown":
+          // Handle "back"
+          Et = 114.62134669977809;
+          x3 = 0.55;
+          // Et = 440 - ((0.8 + x1)/1.8)*x3*440 + 0.3*x3*((Math.abs(0.5-x2))/0.5)*440;
+          console.log(Et);
+          var stringEt = Et.toString(10);
+          // El = 405 + x3*(x2-0.5)*810
+          console.log(El);
+          El = 383.5391346621293;
+          var stringEl = El.toString(10);
+          // let the player kick the ball now!
+          endTop = Et;
+          endLeft = El;
+          console.log(stringEl + " " + stringEt);
+          kick(stringEl, stringEt)
+          break;
+        // case "KeyW":
+        // case "ArrowUp":
+        //   // Handle "forward"
+        //   updatePosition(moveRate);
+        //   break;
+        case "KeyA":
+        case "ArrowLeft":
+          // Handle "turn left"
+          Et = 238;
+          x3 = 0.55;
+          // Et = 440 - ((0.8 + x1)/1.8)*x3*440 + 0.3*x3*((Math.abs(0.5-x2))/0.5)*440;
+          console.log(Et);
+          var stringEt = Et.toString(10);
+          // El = 405 + x3*(x2-0.5)*810
+          console.log(El);
+          El = 134.84061393152302;
+          var stringEl = El.toString(10);
+          // let the player kick the ball now!
+          console.log(stringEl + " " + stringEt);
+          endTop = Et;
+          endLeft = El;
+          kick(stringEl, stringEt)
+          break;
+        case "KeyD":
+        case "ArrowRight":
+          x3 = 0.55;
+           // Handle "turn left"
+          Et = 194.115348703584;
+          // Et = 440 - ((0.8 + x1)/1.8)*x3*440 + 0.3*x3*((Math.abs(0.5-x2))/0.5)*440;
+          console.log(Et);
+          var stringEt = Et.toString(10);
+          // El = 405 + x3*(x2-0.5)*810
+          console.log(El);
+          El = 608.2734912146677;
+          var stringEl = El.toString(10);
+          // let the player kick the ball now!
+          console.log(stringEl + " " + stringEt);
+          endTop = Et;
       endLeft = El;
+          kick(stringEl, stringEt)
+          break;
+          // break;
+      }
+  
+      // refresh();
+  
+      // if (event.code !== "Tab") {
+      //   // Consume the event so it doesn't get handled twice,
+      //   // as long as the user isn't trying to move focus away
+      //   event.preventDefault();
+      // }
+    },
+    true
+  );
+      // get position of the small ball
+      // var element = document.getElementById('power-level-indicator'),
+      //   style = window.getComputedStyle(element),
+      //   right = style.getPropertyValue('right');
+      // x3 = parseInt(right.substring(0,3), 10);
+      // x3 = (191-x3)/121;
+      // console.log(x3);
+      // // x3=121;
+      // // fix the position of the small ball to wherever it is
+      // element.setAttribute("class", "small-ball");
+      // element.style.right = right;
+      // powerBallStopped = true;
       
-      // let the player kick the ball now!
-      console.log(stringEl + " " + stringEt);
-      kick(stringEl, stringEt)
+      // // Calculate the ending position of the ball
+      // // var Et, El, Qt, Ql;
+      // // Et = 115;
+      // Et = 440 - ((0.8 + x1)/1.8)*x3*440 + 0.3*x3*((Math.abs(0.5-x2))/0.5)*440;
+      // console.log(Et);
+      // var stringEt = Et.toString(10);
+      // El = 405 + x3*(x2-0.5)*810
+      // console.log(El);
+      // // El = 464;
+      // var stringEl = El.toString(10);
+                      
+      // // ending co-ordinates of the ball
+      
+      
+      // // let the player kick the ball now!
+      // console.log(stringEl + " " + stringEt);
+      // kick(stringEl, stringEt)
 }
 
 function kickingProcess() {
-    if ((verticalBallStopped == false) && (horizontalBallStopped == false) && (powerBallStopped == false)) {
-      stopVerticalBall();
-    }
-    else if ((verticalBallStopped == true) && (horizontalBallStopped == false) && (powerBallStopped == false)) {
-      stopHorizontalBall();
-    }
-    else if ((verticalBallStopped == true) && (horizontalBallStopped == true) && (powerBallStopped == false)) {
+  
+    // if ((verticalBallStopped == false) && (horizontalBallStopped == false) && (powerBallStopped == false)) {
+    //   stopVerticalBall();
+    // }
+    // else if ((verticalBallStopped == true) && (horizontalBallStopped == false) && (powerBallStopped == false)) {
+    //   stopHorizontalBall();
+    // }
+    // else if ((verticalBallStopped == true) && (horizontalBallStopped == true) && (powerBallStopped == false)) {
       stopPowerBallAndKick();
-    }
-    else if ((verticalBallStopped == true) && (horizontalBallStopped == true) && (powerBallStopped == true)) {
+    // }
+    
+    // else if ((verticalBallStopped == true) && (horizontalBallStopped == true) && (powerBallStopped == true)) {
       if (chanceCount < 4) {
         chanceCount += 1;
       }
@@ -397,7 +487,8 @@ function kickingProcess() {
       modalElem6.setAttribute('class','modal');
       modalElem7.setAttribute('class','modal');
       refreshScene();
-    }
+    // }
+    // refreshScene();
 }
 
 function incrementScore() {
